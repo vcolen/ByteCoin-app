@@ -26,7 +26,22 @@ class ViewController: UIViewController {
     
 }
 
-//MARK: - UIPickerView, UIPickerViewDelegate
+//MARK: - CoinManagerDelegate
+
+extension ViewController: CoinManagerDelegate {
+    func didUpdateCurrency(_ coinManager: CoinManager, _ coin: CoinData) {
+        DispatchQueue.main.async { [self] in
+            bitcoinPriceLabel.text = coin.rateString
+        }
+    }
+    
+    func didFail(with error: Error) {
+        print(error)
+    }
+    
+}
+
+//MARK: - UIPickerView Data Source & Delegate
 
 extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource  {
     
@@ -49,19 +64,5 @@ extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource  {
     }
 }
 
-//MARK: - CoinManagerDelegate
-
-extension ViewController: CoinManagerDelegate {
-    func didUpdateCurrency(_ coinManager: CoinManager, _ coin: CoinData) {
-        DispatchQueue.main.async { [self] in
-            bitcoinPriceLabel.text = coin.rateString
-        }
-    }
-    
-    func didFail(with error: Error) {
-        print(error)
-    }
-    
-}
 
 
