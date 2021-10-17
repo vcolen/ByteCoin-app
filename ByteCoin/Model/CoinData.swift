@@ -8,7 +8,15 @@
 
 import Foundation
 
+
 struct CoinData: Codable{
     let rate: Double
+    
+    var rateString: String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 2
+        return formatter.string(from: rate as NSNumber) ?? ""
+    }
 }
     
