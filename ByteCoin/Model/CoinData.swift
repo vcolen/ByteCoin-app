@@ -19,4 +19,4 @@ struct CoinData: Codable{
         return formatter.string(from: rate as NSNumber) ?? ""
     }
 }
-    
+

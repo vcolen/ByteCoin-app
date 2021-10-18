@@ -9,7 +9,7 @@
 import Foundation
 
 protocol CoinManagerDelegate {
-    func didUpdateCurrency(_ coinManager: CoinManager, _ coin: CoinData)
+    func didUpdateCurrency(_ coin: String, _ currency: String)
     func didFail(with error: Error)
 }
 
@@ -23,8 +23,23 @@ struct CoinManager {
     let currencyArray = ["AUD", "BRL","CAD","CNY","EUR","GBP","HKD","IDR","ILS","INR","JPY","MXN","NOK","NZD","PLN","RON","RUB","SEK","SGD","USD","ZAR"]
     
     func getCoinPrice(for currency: String) {
-        let url = baseURL + "\(currency)?apikey=\(apiKey!)"
-        performRequest(with: url)
+        let urlString = baseURL + "\(currency)?apikey=\(apiKey!)"
+        if let url = URL(string: urlString){
+            let session = URLSession(configuration: .default)
+            let task = session.dataTask(with: url) { data, response, error in
+                
+                if error != nil {
+                    print(error!)
+                }
+                
+                if let safeData = data {
+                    if let coin = self.parseJSON(safeData) {
+                        self.delegate?.didUpdateCurrency(coin.rateString, currency)
+                    }
+                }
+            }
+            task.resume()
+        }
     }
     
     func parseJSON(_ data: Data) -> CoinData? {
@@ -38,22 +53,7 @@ struct CoinManager {
         }
     }
     
-    func performRequest(with urlString: String) {
-        if let url = URL(string: urlString){
-            let session = URLSession(configuration: .default)
-            let task = session.dataTask(with: url) { data, response, error in
-                if error != nil {
-                    print(error!)
-                }
-                if let safeData = data {
-                    if let coin = self.parseJSON(safeData) {
-                        self.delegate?.didUpdateCurrency(self, coin)
-                    }
-                }
-            }
-            task.resume()
-        }
-    }
+    
     
     
 }

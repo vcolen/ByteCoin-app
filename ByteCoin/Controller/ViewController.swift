@@ -29,9 +29,10 @@ class ViewController: UIViewController {
 //MARK: - CoinManagerDelegate
 
 extension ViewController: CoinManagerDelegate {
-    func didUpdateCurrency(_ coinManager: CoinManager, _ coin: CoinData) {
-        DispatchQueue.main.async { [self] in
-            bitcoinPriceLabel.text = coin.rateString
+    func didUpdateCurrency(_ coin: String, _ currency: String) {
+        DispatchQueue.main.async {
+            self.bitcoinPriceLabel.text = coin
+            self.currencyLabel.text = currency
         }
     }
     
