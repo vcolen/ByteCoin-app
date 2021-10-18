@@ -7,6 +7,7 @@
 </p>
 
 ## Bytecoin's main purpose is to return Bitcoin's current value in different currencies!
+It uses the Coin.io API to return the values.
 
 ## This is was made with the purpose of fixating the concepts learned in the [Clima App lesson](https://github.com/vcolen/Clima-app), which were:
 * How to create a dark-mode enabled app.
